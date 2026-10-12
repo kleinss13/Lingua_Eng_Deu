@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lingua">
+  <meta name="description" content="Aprende alemán e inglés con tarjetas sencillas, tests y repasos.">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>Lingua — alemán e inglés a tu ritmo</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" id="brandHome" aria-label="Lingua, inicio">
+        <span class="brand-mark">L</span><span>lingua<span class="brand-dot">.</span></span>
+      </a>
+      <div class="top-actions">
+        <button id="languageToggle" class="language-toggle" type="button" aria-label="Cambiar idioma de aprendizaje">DE · A1 ▾</button>
+        <button id="themeToggle" class="icon-button" aria-label="Cambiar tema" title="Cambiar tema">◐</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="homeView" class="view home-view">
+        <div class="welcome">
+          <p class="eyebrow">DEUTSCH LERNEN · A1</p>
+          <h1>Un poco cada día<span>.</span></h1>
+          <p>Tu alemán, paso a paso. ¿Qué hacemos hoy?</p>
+        </div>
+        <section class="stats-grid" aria-label="Tu progreso">
+          <article class="stat-card"><span class="stat-label">PALABRAS</span><strong id="totalStat">0</strong></article>
+          <article class="stat-card"><span class="stat-label">ACIERTOS</span><strong id="accuracyStat">—</strong></article>
+          <article class="stat-card"><span class="stat-label">ERRORES</span><strong id="errorsStat">0</strong></article>
+        </section>
+        <div class="home-grid" aria-label="Opciones principales">
+          <button class="home-option option-test" data-go="study">
+            <span class="option-icon">✓</span>
+            <span class="option-copy"><strong>Test</strong><small>Practica y comprueba lo que sabes</small></span>
+            <span class="option-arrow">↗</span>
+          </button>
+          <button class="home-option option-errors" data-go="errors">
+            <span class="option-icon">↻</span>
+            <span class="option-copy"><strong>Errores</strong><small>Vuelve a las palabras que fallaste</small></span>
+            <span class="option-arrow">↗</span>
+          </button>
+          <button class="home-option option-words" data-go="cards">
+            <span class="option-icon">▤</span>
+            <span class="option-copy"><strong>Palabras</strong><small>Explora todo tu vocabulario</small></span>
+            <span class="option-arrow">↗</span>
+          </button>
+        </div>
+        <div class="home-bottom"><span class="orange-dot"></span><span>Una tarjeta cada vez. Fortschritt zählt.</span></div>
+      </section>
+
+      <section id="studyView" class="view" hidden>
+        <div class="page-heading">
+          <button class="back-button" data-go="home">← Inicio</button>
+          <p class="eyebrow" id="studyEyebrow">MODO TEST</p>
+          <h2 id="studyTitle">Translate the words</h2>
+          <p class="page-subtitle">Escribe la traducción y comprueba tu respuesta.</p>
+        </div>
+        <div class="study-controls">
+          <span id="progressText" class="progress-text">0 / 0</span>
+          <div class="study-actions">
+            <select id="studyMode" hidden>
+              <option value="all">Todas</option>
+              <option value="errors">Errores</option>
+            </select>
+            <button id="shuffleBtn" class="subtle-button">↻ Barajar</button>
+          </div>
+        </div>
+        <div id="studyEmpty" class="empty-state">
+          <div class="empty-illustration">✦</div>
+          <h3>Tu primera tarjeta te espera</h3>
+          <p>Añade una palabra o frase para empezar a practicar.</p>
+          <button class="primary-button" data-go="home" hidden>Volver al inicio →</button>
+        </div>
+        <article id="quizCard" class="quiz-card" hidden>
+          <div class="card-topline">
+            <span class="language-pill">ESPAÑOL → ALEMÁN</span>
+            <span id="cardPosition" class="muted">1</span>
+          </div>
+          <div class="prompt-wrap">
+            <p id="promptText" class="prompt-text"></p>
+            <p id="correctReveal" class="correct-reveal" hidden></p>
+            <p id="promptHint" class="prompt-hint">¿Cómo se dice en alemán?</p>
+          </div>
+          <form id="answerForm" autocomplete="off">
+            <label for="answerInput" class="input-label">TU RESPUESTA</label>
+            <div class="answer-row">
+              <input id="answerInput" type="text" placeholder="Escribe la traducción…" autocapitalize="off" spellcheck="false" required>
+              <button id="checkBtn" class="primary-button" type="submit">Comprobar</button>
+            </div>
+          </form>
+          <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+          <div class="quiz-footer">
+            <span id="sessionScore">0 aciertos · 0 fallos</span>
+            <button id="nextBtn" class="next-button" hidden>Siguiente →</button>
+          </div>
+        </article>
+        <div class="study-bottom"><span class="orange-dot"></span><span>Sin prisa. Lo importante es recordarlo.</span></div>
+      </section>
+
+      <section id="cardsView" class="view" hidden>
+        <div class="page-heading">
+          <button class="back-button" data-go="home">← Inicio</button>
+          <p class="eyebrow">TU VOCABULARIO</p>
+          <h2>Palabras</h2>
+          <p class="page-subtitle">Todo el vocabulario A1 incluido en la app.</p>
+        </div>
+        <div class="list-toolbar">
+          <div class="search-wrap">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Buscar palabra o traducción…" aria-label="Buscar tarjetas">
+          </div>
+        </div>
+        <div id="cardsEmpty" class="empty-state small-empty" hidden>
+          <div class="empty-illustration">▤</div>
+          <h3>Aún no hay palabras</h3>
+          <p></p>
+        </div>
+        <div id="cardList" class="card-list"></div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="Navegación principal">
+      <button class="tab active" data-view="home" type="button"><span class="tab-icon">⌂</span><span>Inicio</span></button>
+      <button class="tab" data-view="study" type="button"><span class="tab-icon">✓</span><span>Test</span></button>
+      <button class="tab" data-view="cards" type="button"><span class="tab-icon">▤</span><span>Palabras</span></button>
+    </nav>
+
+    <footer>
+      <span>LINGUA<span class="brand-dot">.</span> DEUTSCH A1</span>
+      <span id="saveStatus">Vocabulario integrado</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  /* Selector de idioma DE / EN — recarga con el vocabulario embebido correspondiente */
+  (() => {
+    const KEY = "lingua.language.v1";
+    const lang = localStorage.getItem(KEY) === "en" ? "en" : "de";
+    const btn = document.getElementById("languageToggle");
+    if (btn) {
+      btn.textContent = lang === "en" ? "EN · A1 ▾" : "DE · A1 ▾";
+      btn.addEventListener("click", () => {
+        const next = lang === "en" ? "de" : "en";
+        localStorage.setItem(KEY, next);
+        location.reload();
+      });
+    }
+    if (lang === "en") {
+      document.documentElement.dataset.language = "en";
+      document.querySelector(".welcome .eyebrow").textContent = "LEARN ENGLISH · A1";
+      document.querySelector(".welcome h1").innerHTML = "A little every day<span>.</span>";
+      document.querySelector(".welcome > p:last-of-type").textContent = "Your English, step by step. What shall we do today?";
+      document.querySelectorAll(".stat-label")[0].textContent = "WORDS";
+      document.querySelectorAll(".stat-label")[1].textContent = "ACCURACY";
+      document.querySelectorAll(".stat-label")[2].textContent = "MISTAKES";
+      const opts = document.querySelectorAll(".home-option .option-copy");
+      if (opts[0]) { opts[0].querySelector("strong").textContent = "Test"; opts[0].querySelector("small").textContent = "Practise and check what you know"; }
+      if (opts[1]) { opts[1].querySelector("strong").textContent = "Mistakes"; opts[1].querySelector("small").textContent = "Review words you got wrong"; }
+      if (opts[2]) { opts[2].querySelector("strong").textContent = "Words"; opts[2].querySelector("small").textContent = "Explore all your vocabulary"; }
+      document.querySelector(".home-bottom span:last-child").textContent = "One card at a time. Every step counts.";
+      document.querySelector(".language-pill").textContent = "SPANISH → ENGLISH";
+      document.querySelector(".prompt-hint").textContent = "How do you say it in English?";
+      document.querySelector(".input-label").textContent = "YOUR ANSWER";
+      document.querySelector("#answerInput").placeholder = "Type the translation…";
+      document.querySelector("#checkBtn").textContent = "Check";
+      document.querySelector(".page-subtitle").textContent = "Type the translation and check your answer.";
+      document.querySelector("footer span:first-child").innerHTML = 'LINGUA<span class="brand-dot">.</span> ENGLISH A1';
+      document.querySelectorAll(".tab span:last-child")[0].textContent = "Home";
+      document.querySelectorAll(".tab span:last-child")[1].textContent = "Test";
+      document.querySelectorAll(".tab span:last-child")[2].textContent = "Words";
+      document.querySelector("#cardsView .page-heading h2").textContent = "Words";
+      document.querySelector("#cardsView .page-subtitle").textContent = "All the built-in A1 vocabulary.";
+      document.querySelector("#searchInput").placeholder = "Search word or translation…";
+      document.querySelector("#shuffleBtn").textContent = "↻ Shuffle";
+    }
+  })();
+  </script>
+  <script src="./script.js"></script>
+</body>
+</html>
